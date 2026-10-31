@@ -61,6 +61,10 @@ def _eur(v: float | None) -> str:
     return "–" if v is None else f"{v:.2f} €".replace(".", ",")
 
 
+def _dec(v: float) -> str:
+    return f"{v:.2f}".replace(".", ",")
+
+
 def _kickoff(iso: str | None) -> str:
     if not iso:
         return ""
@@ -91,10 +95,10 @@ def format_bet(r: dict) -> str:
     pick = html.escape(r["pick_label"])
     book = html.escape(r.get("bookmaker_label") or r["bookmaker"])
     fair = r.get("fair_odds_sharp")
-    fair_txt = f" (juste {fair:.2f})".replace(".", ",") if fair else ""
+    fair_txt = f" (juste {_dec(fair)})" if fair else ""
     lines = [
         f"{flag} <b>{home} – {away}</b> · {html.escape(r.get('league_name') or r['league'])} · {_kickoff(r.get('kickoff'))}",
-        f"➡️ <b>{pick}</b> @ <b>{r['odds']:.2f}</b> {book}{fair_txt}".replace(f"{r['odds']:.2f}", f"{r['odds']:.2f}".replace(".", ",")),
+        f"➡️ <b>{pick}</b> @ <b>{_dec(r['odds'])}</b> {book}{fair_txt}",
         f"Edge {_pct(r['edge'])} · Proba {r['p_model'] * 100:.0f} % · Mise <b>{_eur(r['stake'])}</b> · Risque {RISK_STARS.get(r['risk'], '')}",
     ]
     if r.get("edge_vs_sharp") is not None:

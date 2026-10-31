@@ -25,7 +25,7 @@ ClubElo / API-Football┘   Elo · forme · DC     ├─> API FastAPI  ──> 
 * `deploy/` : Dockerfile backend, `docker-compose.yml` (api, worker, web), `.env.example`.
 * `n8n/` : workflow d'orchestration optionnel (règlement + grille + alerte).
 * `docs/` : [SPORTS.md](docs/SPORTS.md) (sports proposés), [MODEL.md](docs/MODEL.md) (méthode),
-  [DEPLOY.md](docs/DEPLOY.md) (VPS, Telegram, clés API, n8n).
+  [DEPLOY.md](docs/DEPLOY.md) (VPS, Telegram, clés API, n8n), [API.md](docs/API.md) (contrat HTTP).
 
 ## Démarrage local
 
