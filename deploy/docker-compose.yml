@@ -1,0 +1,65 @@
+# EdgeBet sur le VPS : API + worker (planification, Telegram) + PWA.
+# Lancer depuis ce dossier :  docker compose --env-file .env up -d --build
+#
+# Le port web n'est exposé qu'en local (127.0.0.1:8080) : on le publie via le reverse proxy
+# déjà présent sur le VPS (Traefik de n8n, Caddy ou Nginx). Voir docs/DEPLOY.md.
+
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile.backend
+    image: edgebet-backend:latest
+    container_name: edgebet-api
+    command: ["edgebet", "serve", "--host", "0.0.0.0", "--port", "8000"]
+    env_file: .env
+    environment:
+      EDGEBET_DATA_DIR: /app/data
+    volumes:
+      - edgebet-data:/app/data
+    restart: unless-stopped
+    # Exposer en local pour n8n hors Docker ou pour un reverse proxy système :
+    # ports:
+    #   - "127.0.0.1:8000:8000"
+
+  worker:
+    image: edgebet-backend:latest
+    container_name: edgebet-worker
+    command: ["edgebet", "worker"]
+    env_file: .env
+    environment:
+      EDGEBET_DATA_DIR: /app/data
+    volumes:
+      - edgebet-data:/app/data
+    depends_on:
+      - api
+    restart: unless-stopped
+
+  web:
+    build:
+      context: ../frontend
+    image: edgebet-web:latest
+    container_name: edgebet-web
+    depends_on:
+      - api
+    ports:
+      - "127.0.0.1:8080:80"
+    restart: unless-stopped
+    # Exemple Traefik (si n8n tourne déjà derrière Traefik sur le VPS) :
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.edgebet.rule=Host(`edgebet.mondomaine.fr`)"
+    #   - "traefik.http.routers.edgebet.entrypoints=websecure"
+    #   - "traefik.http.routers.edgebet.tls.certresolver=mytlschallenge"
+    #   - "traefik.http.services.edgebet.loadbalancer.server.port=80"
+    # networks:
+    #   - default
+    #   - n8n_default
+
+volumes:
+  edgebet-data:
+
+# Pour partager le réseau Docker de n8n (afin que n8n appelle http://edgebet-api:8000) :
+# networks:
+#   n8n_default:
+#     external: true

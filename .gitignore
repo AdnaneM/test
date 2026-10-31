@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+# Données locales et modèles (volumineux, régénérables)
+backend/data/
+data/
+*.db
+*.joblib
+# Secrets
+.env
+deploy/.env
+# Node
+frontend/node_modules/
+frontend/dist/
+# Divers
+.DS_Store
