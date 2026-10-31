@@ -1,0 +1,20 @@
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 5173,
+    proxy: {
+      // En dev, le backend FastAPI tourne sur :8000 ; on évite ainsi tout souci de CORS.
+      "/api": { target: "http://localhost:8000", changeOrigin: true },
+    },
+  },
+  build: {
+    target: "es2020",
+    sourcemap: false,
+    cssCodeSplit: false,
+    modulePreload: { polyfill: false },
+  },
+});

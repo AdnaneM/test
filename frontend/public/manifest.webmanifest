@@ -1,0 +1,18 @@
+{
+  "name": "EdgeBet",
+  "short_name": "EdgeBet",
+  "description": "Recommandations de paris sportifs à valeur : grille du jour, historique et statistiques.",
+  "lang": "fr",
+  "id": "/",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#f3f4f7",
+  "theme_color": "#2f6fed",
+  "categories": ["sports", "finance"],
+  "icons": [
+    { "src": "/icons/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "/icons/icon-maskable.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}
